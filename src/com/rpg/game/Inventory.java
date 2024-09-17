@@ -52,7 +52,6 @@ public class Inventory {
     public Item useItem(String itemName) {
         for (Item item : items) {
             if (item.getName().equalsIgnoreCase(itemName)) {
-                System.out.println("You used " + item.getName() + ".");
                 return item;
             }
         }

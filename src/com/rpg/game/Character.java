@@ -110,6 +110,7 @@ public class Character {
                 this.addItemToInventory(this.weaponHeld);
             }
             this.weaponHeld = item;
+            System.out.println("You equip " + this.weaponHeld.getName());
             this.removeItemFromInventory((item.getName()));
         } else {
             System.out.println("You cannot wield this item!");
@@ -123,6 +124,7 @@ public class Character {
                 this.addItemToInventory(this.armorWorn);
             }
             this.armorWorn = item;
+            System.out.println("You equip " + this.armorWorn.getName());
             this.removeItemFromInventory((item.getName()));
         }else{
             System.out.println("You cannot wear this item!");
@@ -136,6 +138,7 @@ public class Character {
                 this.addItemToInventory(this.shieldWorn);
             }
             this.shieldWorn = item;
+            System.out.println("You equip " + this.shieldWorn.getName());
             this.removeItemFromInventory((item.getName()));
         }else{
             System.out.println("You cannot wear this item!");
@@ -147,8 +150,13 @@ public class Character {
         if (item != null) {
             switch (item.getType()) {
                 case "Weapon":
-                    System.out.println("You attack with " + item.getName() + "!");
-                    // Add weapon's value to strength temporarily
+                    equipWeapon(item);
+                    break;
+                case "Armor":
+                    equipArmor(item);
+                    break;
+                case "Shield":
+                    equipShield(item);
                     break;
                 case "Potion":
                     System.out.println("You drink a potion and heal " + item.getValue() + " HP.");
@@ -216,6 +224,28 @@ public class Character {
         return savingThrows;
     }
 
+    public void printEquipment(){
+        System.out.println("Equipped Items:");
+
+        String weaponName = "NONE";
+        if (this.weaponHeld != null){
+            weaponName = this.weaponHeld.getName();
+        }
+        System.out.println("Weapon: " + weaponName);
+
+        String armorName = "NONE";
+        if (this.armorWorn != null){
+            armorName = this.armorWorn.getName();
+        }
+        System.out.println("Armor: " + armorName);
+
+        String shieldName = "NONE";
+        if (this.shieldWorn != null){
+            shieldName = this.shieldWorn.getName();
+        }
+        System.out.println("Shield: " + shieldName);
+    }
+
     public void printStats() {
         System.out.println("Name: " + name);
         System.out.println("Level " + level + " " + race + " " + charClass);
@@ -225,12 +255,12 @@ public class Character {
         System.out.println("AB: " + attackBonus);
         System.out.println("AC: " + armorClass);
         System.out.println();
-        System.out.println("Strength: " + strength);
-        System.out.println("Intelligence: " + intelligence);
-        System.out.println("Wisdom: " + wisdom);
-        System.out.println("Dexterity: " + dexterity);
-        System.out.println("Constitution: " + constitution);
-        System.out.println("Charisma: " + charisma);
+        System.out.println("Strength: " + strength + "(" + calculateAbilityBonus(strength) + ")");
+        System.out.println("Intelligence: " + intelligence + "(" + calculateAbilityBonus(intelligence) + ")");
+        System.out.println("Wisdom: " + wisdom + "(" + calculateAbilityBonus(wisdom) + ")");
+        System.out.println("Dexterity: " + dexterity + "(" + calculateAbilityBonus(dexterity) + ")");
+        System.out.println("Constitution: " + constitution + "(" + calculateAbilityBonus(constitution) + ")");
+        System.out.println("Charisma: " + charisma + "(" + calculateAbilityBonus(charisma) + ")");
         System.out.println();
         System.out.println("Saving Throws");
         System.out.println("Death Ray/Poison: " + deathRayPoisonSave);

@@ -14,16 +14,17 @@ public class Game {
         player.printStats();
 
         // Add some starting items to the player's inventory
-        player.addItemToInventory(new Item("Sword", "Weapon", "A sharp blade", 5));
-        player.addItemToInventory(new Item("Health Potion", "Potion", "Restores health", 10));
+        player.addItemToInventory(ItemRepository.getItem("Shortsword"));
+
 
         while (true) {
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Explore");
             System.out.println("2. View Stats");
             System.out.println("3. View Inventory");
-            System.out.println("4. Use Item");
-            System.out.println("5. Exit Game");
+            System.out.println("4. View Equipped Items");
+            System.out.println("5. Use Item");
+            System.out.println("6. Exit Game");
 
             System.out.print("Enter choice: ");
             int choice;
@@ -46,11 +47,14 @@ public class Game {
                     player.viewInventory();
                     break;
                 case 4:
+                    player.printEquipment();
+                    break;
+                case 5:
                     System.out.print("Enter the name of the item you want to use: ");
                     String itemName = scanner.nextLine();
                     player.useItem(itemName);
                     break;
-                case 5:
+                case 6:
                     System.out.println("Goodbye!");
                     scanner.close();
                     System.exit(0);
@@ -80,7 +84,7 @@ public class Game {
     private static Character createNewCharacter(Scanner scanner, DiceRoller diceRoller) {
         // List of valid races/classes
         List<String> validRaces = Arrays.asList("Human", "Elf", "Dwarf", "Halfling");
-        List<String> validClasses = Arrays.asList("Fighter", "Thief", "Cleric", "Magic-User");
+        List<String> validClasses = Arrays.asList("Fighter", "Thief", "Cleric", "Magic User");
         boolean validInput = false;
 
         System.out.print("Enter your character's name: ");
@@ -88,26 +92,73 @@ public class Game {
 
         String race = "";
         // Keep asking until the user enters a valid race
-        while (!validInput) {
-            System.out.print("Enter your character's race (Human, Elf, Dwarf, Halfling): ");
-            race = scanner.nextLine();
-            if (validRaces.contains(race)) {
-                validInput = true; // Valid race found, exit loop
-            } else {
-                System.out.println("Invalid race! Please choose again.");
+        while (!validInput){
+            System.out.print("Enter your character's race (1. Human, 2. Elf, 3. Dwarf, 4. Halfling): ");
+            int choice = 0;
+            try {
+             choice = Integer.parseInt(scanner.nextLine());
+         } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+         }
+
+            switch (choice) {
+                case 1:
+                    race = "Human";
+                    validInput = true;
+                    break;
+                case 2:
+                    race = "Elf";
+                    validInput = true;
+                    break;
+                case 3:
+                    race = "Dwarf";
+                    validInput = true;
+                    break;
+                case 4:
+                    race = "Halfling";
+                    validInput = true;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
             }
-        }
+    }
+
 
         validInput = false;
         String charClass = "";
         // Keep asking until the user enters a valid race
         while (!validInput) {
-            System.out.print("Enter your character's class (Fighter, Thief, Cleric, Magic-User): ");
-            charClass = scanner.nextLine();
-            if (validClasses.contains(charClass)) {
-                validInput = true; // Valid class found, exit loop
-            } else {
-                System.out.println("Invalid class! Please choose again.");
+            System.out.print("Enter your character's class (1. Fighter, 2. Thief, 3. Cleric, 4. Magic User): ");
+            int choice = 0;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+
+            switch (choice) {
+                case 1:
+                    charClass = "Fighter";
+                    validInput = true;
+                    break;
+                case 2:
+                    charClass = "Thief";
+                    validInput = true;
+                    break;
+                case 3:
+                    charClass = "Cleric";
+                    validInput = true;
+                    break;
+                case 4:
+                    if (race.equals("Halfling") || race.equals("Dwarf")){
+                        System.out.println("Dwarves and Halfings may not be Magic Users. Please try again.");
+                    }else{
+                        charClass = "Magic User";
+                        validInput = true;
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
             }
         }
 
@@ -118,7 +169,7 @@ public class Game {
         return new Character(name, race, charClass, 1, startingHP, assignedScores[0], assignedScores[1], assignedScores[2], assignedScores[3],assignedScores[4],assignedScores[5]);
     }
 
-    // Function to roll 3D6 six times
+    // Function to roll 3D6 six times for character creation
     public static int[] rollAbilityScores(DiceRoller diceRoller) {
         int[] abilityScores = new int[6];
         for (int i = 0; i < 6; i++) {
@@ -128,27 +179,7 @@ public class Game {
         return abilityScores;
     }
 
-    public static int calculateAbilityBonus(int abilityScore){
-        if (abilityScore == 3) {
-            return -3;
-        } else if (abilityScore >= 4 && abilityScore <= 5) {
-            return -2;
-        } else if (abilityScore >= 6 && abilityScore <= 8) {
-            return -1;
-        } else if (abilityScore >= 9 && abilityScore <= 12) {
-            return 0;
-        } else if (abilityScore >= 13 && abilityScore <= 15) {
-            return 1;
-        } else if (abilityScore >= 16 && abilityScore <= 17) {
-            return 2;
-        } else if (abilityScore == 18) {
-            return 3;
-        } else {
-            throw new IllegalArgumentException("Invalid ability score");
-        }
-    }
-
-    // Function to assign scores to attributes based on chosen class
+    // Function to assign scores to attributes based on chosen class during character creation
     public static int[] assignScoresToAttributes(String chosenClass, String chosenRace, int[] scores) {
         int[] assignedScores = new int[6]; // Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma
 
@@ -207,6 +238,7 @@ public class Game {
         return assignedScores;
     }
 
+    //calculates starting HP for new character creation
     public static int assignStartingHP(String chosenClass, String chosenRace){
     int hitPoints;
     switch (chosenClass){
