@@ -31,29 +31,31 @@ public class Character {
     private Item armorWorn;
 
     // Constructor
-    public Character(String name, String race, String charClass, int level,  int maxHitPoints, int strength, int intelligence, int wisdom, int dexterity, int constitution, int charisma) {
+    public Character(String name, String race, String charClass, int level,  int maxHitPoints, int strength,int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
         this.name = name;
         this.race = race;
         this.charClass = charClass;
         this.level = level;
         this.xp = 0;
-        this.maxHitPoints = maxHitPoints;
-        this.hitPoints = maxHitPoints;
         this.strength = strength;
         this.constitution = constitution;
         this.wisdom = wisdom;
         this.charisma = charisma;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
+
+        this.maxHitPoints = maxHitPoints + calculateAbilityBonus(this.constitution);
+        this.hitPoints = this.maxHitPoints;
         this.armorClass = 11;
         this.attackBonus = 0;
         this.inventory = new Inventory(); // Initialize an empty inventory
 
-        this.deathRayPoisonSave = 10;
-        this.magicWandSave = 10;
-        this.paralysisSave = 10;
-        this.dragonBreathSave = 10;
-        this.spellSave = 10;
+        int [] savingThrows = assignStartingSavingThrows(charClass,race);
+        this.deathRayPoisonSave = savingThrows[0];
+        this.magicWandSave = savingThrows[1];
+        this.paralysisSave = savingThrows[2];
+        this.dragonBreathSave = savingThrows[3];
+        this.spellSave = savingThrows[4];
 
         this.weaponHeld = null;
         this.shieldWorn = null;
@@ -158,6 +160,62 @@ public class Character {
         }
     }
 
+    // Function to assign stating saving throws based on class and race.
+    public static int[] assignStartingSavingThrows(String chosenClass, String chosenRace) {
+        int[] savingThrows = new int[5]; // DeathRay, Wands, Paralysis, DragonBreath, Spells
+
+        switch (chosenClass) {
+            case "Fighter":
+                savingThrows[0] = 12;
+                savingThrows[1] = 13;
+                savingThrows[2] = 14;
+                savingThrows[3] = 15;
+                savingThrows[4] = 17;
+                break;
+            case "Magic User":
+                savingThrows[0] = 13;
+                savingThrows[1] = 14;
+                savingThrows[2] = 13;
+                savingThrows[3] = 16;
+                savingThrows[4] = 15;
+                break;
+            case "Thief":
+                savingThrows[0] = 13;
+                savingThrows[1] = 14;
+                savingThrows[2] = 13;
+                savingThrows[3] = 16;
+                savingThrows[4] = 15;
+                break;
+            case "Cleric":
+                savingThrows[0] = 11;
+                savingThrows[1] = 12;
+                savingThrows[2] = 14;
+                savingThrows[3] = 16;
+                savingThrows[4] = 15;
+                break;
+            default:
+                System.out.println("Unknown class. No saving throws assigned.");
+                break;
+        }
+
+        switch (chosenRace) {
+            case "Dwarf":
+            case "Halfling":
+                savingThrows[0] -= 4;
+                savingThrows[1] -= 4;
+                savingThrows[2] -= 4;
+                savingThrows[3] -= 3;
+                savingThrows[4] -= 4;
+                break;
+            case "Elf":
+                savingThrows[1] -= 2;
+                savingThrows[2] -= 1;
+                savingThrows[4] -= 2;
+                break;
+        }
+        return savingThrows;
+    }
+
     public void printStats() {
         System.out.println("Name: " + name);
         System.out.println("Level " + level + " " + race + " " + charClass);
@@ -180,6 +238,25 @@ public class Character {
         System.out.println("Paralysis: " + paralysisSave);
         System.out.println("Dragon Breath: " + dragonBreathSave);
         System.out.println("Rods/Staves/Spells: " + spellSave);
+    }
 
+    public static int calculateAbilityBonus(int abilityScore){
+        if (abilityScore == 3) {
+            return -3;
+        } else if (abilityScore >= 4 && abilityScore <= 5) {
+            return -2;
+        } else if (abilityScore >= 6 && abilityScore <= 8) {
+            return -1;
+        } else if (abilityScore >= 9 && abilityScore <= 12) {
+            return 0;
+        } else if (abilityScore >= 13 && abilityScore <= 15) {
+            return 1;
+        } else if (abilityScore >= 16 && abilityScore <= 17) {
+            return 2;
+        } else if (abilityScore == 18) {
+            return 3;
+        } else {
+            throw new IllegalArgumentException("Invalid ability score");
+        }
     }
 }
