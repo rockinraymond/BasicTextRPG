@@ -13,8 +13,10 @@ public class Game {
         Character player = createNewCharacter(scanner, diceRoller);
         player.printStats();
 
-        // Add some starting items to the player's inventory
-        player.addItemToInventory(ItemRepository.getItem("Shortsword"));
+        // Add some starting items to the player's inventory based on class
+        player.addItemToInventory(ItemRepository.getItem("Longsword"));
+        player.addItemToInventory(ItemRepository.getItem("Chain mail"));
+        player.addItemToInventory(ItemRepository.getItem("shield"));
 
 
         while (true) {
@@ -37,8 +39,8 @@ public class Game {
 
             switch (choice) {
                 case 1:
-                    Enemy enemy = generateRandomEnemy();
-                    Combat.fight(player, enemy);
+                    //Monster monster = generateRandomEnemy();
+                   // Combat.fight(player, monster);
                     break;
                 case 2:
                     player.printStats();
@@ -73,13 +75,13 @@ public class Game {
     }
 
     // Optional: Method to generate random enemies
-    private static Enemy generateRandomEnemy() {
-        String[] enemyNames = {"Goblin", "Orc", "Skeleton", "Troll"};
-        String name = enemyNames[(int) (Math.random() * enemyNames.length)];
-        int health = 8 + (int) (Math.random() * 5); // Health between 8 and 12
-        int attackPower = 3 + (int) (Math.random() * 3); // Attack power between 3 and 5
-        return new Enemy(name, health, attackPower);
-    }
+//    private static Monster generateRandomEnemy() {
+//        String[] enemyNames = {"Goblin", "Orc", "Skeleton", "Troll"};
+//        String name = enemyNames[(int) (Math.random() * enemyNames.length)];
+//        int health = 8 + (int) (Math.random() * 5); // Health between 8 and 12
+//        int attackPower = 3 + (int) (Math.random() * 3); // Attack power between 3 and 5
+//        return new Monster(name, health, attackPower);
+//    }
 
     private static Character createNewCharacter(Scanner scanner, DiceRoller diceRoller) {
         // List of valid races/classes

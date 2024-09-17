@@ -1,25 +1,25 @@
 package com.rpg.game;
 
 public class Combat {
-    public static void fight(Character player, Enemy enemy) {
-        System.out.println("A wild " + enemy.getName() + " appears!");
+    public static void fight(Character player, Monster monster) {
+        System.out.println("A wild " + monster.getName() + " appears!");
 
-        while (player.getHitPoints() > 0 && enemy.getHealth() > 0) {
+        while (player.getHitPoints() > 0 && monster.getHitPoints() > 0) {
             int playerAttack = player.attack();
             System.out.println(player.getName() + " attacks for " + playerAttack + " damage.");
-            enemy.takeDamage(playerAttack);
+            monster.takeDamage(playerAttack);
 
-            if (enemy.getHealth() > 0) {
-                int enemyAttack = enemy.attack();
-                System.out.println(enemy.getName() + " attacks for " + enemyAttack + " damage.");
+            if (monster.getHitPoints() > 0) {
+                int enemyAttack = monster.attack();
+                System.out.println(monster.getName() + " attacks for " + enemyAttack + " damage.");
                 player.takeDamage(enemyAttack);
             } else {
-                System.out.println(enemy.getName() + " has been defeated!");
+                System.out.println(monster.getName() + " has been defeated!");
                 return;
             }
 
             System.out.println(player.getName() + " Health: " + player.getHitPoints());
-            System.out.println(enemy.getName() + " Health: " + enemy.getHealth());
+            System.out.println(monster.getName() + " Health: " + monster.getHitPoints());
         }
 
         if (player.getHitPoints() <= 0) {

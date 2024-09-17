@@ -1,16 +1,11 @@
 package com.rpg.game;
 
-public class Character {
-    private String name;
+public class Character extends Actor{
     private String race;
     private String charClass;
 
     private int level;
     private int xp;
-    private int attackBonus;
-    private int hitPoints;
-    private int maxHitPoints;
-    private int armorClass;
 
     private int strength;
     private int dexterity;
@@ -18,12 +13,6 @@ public class Character {
     private int constitution;
     private int wisdom;
     private int charisma;
-
-    private int deathRayPoisonSave;
-    private int magicWandSave;
-    private int paralysisSave;
-    private int dragonBreathSave;
-    private int spellSave;
 
     private Inventory inventory;
     private Item weaponHeld;
@@ -63,29 +52,6 @@ public class Character {
     }
 
     // Getters and setters
-    public String getName() {
-        return name;
-    }
-
-    public int getHitPoints() {
-        return hitPoints;
-    }
-
-    public void takeDamage(int damage) {
-        this.hitPoints -= damage;
-        if (this.hitPoints < 0) this.hitPoints = 0;
-    }
-
-    public void heal(int amount) {
-        this.hitPoints += amount;
-        if(this.hitPoints > this.maxHitPoints){
-            this.hitPoints = this.maxHitPoints;
-        }
-    }
-
-    public int getArmorClass() {
-        return armorClass;
-    }
 
     public int attack() {
         return (int) (Math.random() * strength); // Attack based on strength
@@ -124,6 +90,7 @@ public class Character {
                 this.addItemToInventory(this.armorWorn);
             }
             this.armorWorn = item;
+            this.updateArmorClass();
             System.out.println("You equip " + this.armorWorn.getName());
             this.removeItemFromInventory((item.getName()));
         }else{
@@ -138,6 +105,7 @@ public class Character {
                 this.addItemToInventory(this.shieldWorn);
             }
             this.shieldWorn = item;
+            this.updateArmorClass();
             System.out.println("You equip " + this.shieldWorn.getName());
             this.removeItemFromInventory((item.getName()));
         }else{
@@ -157,10 +125,6 @@ public class Character {
                     break;
                 case "Shield":
                     equipShield(item);
-                    break;
-                case "Potion":
-                    System.out.println("You drink a potion and heal " + item.getValue() + " HP.");
-                    heal(item.getValue()); // Heal the player
                     break;
                 default:
                     System.out.println("You can't use this item right now.");
@@ -244,6 +208,17 @@ public class Character {
             shieldName = this.shieldWorn.getName();
         }
         System.out.println("Shield: " + shieldName);
+    }
+
+    public void updateArmorClass(){
+        int armorClass = 11;
+        if (this.armorWorn != null){
+            armorClass = this.armorWorn.getArmorClass();
+        }
+        if (this.shieldWorn != null){
+            armorClass += this.shieldWorn.getArmorClass();
+        }
+        this.armorClass = armorClass;
     }
 
     public void printStats() {
