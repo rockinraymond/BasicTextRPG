@@ -10,7 +10,8 @@ public class Game {
         System.out.print("Enter your character's name: ");
         String name = scanner.nextLine();
 
-        Player player = new Player(name, 20, 6, 5, 3, 10); // Initial player stats
+
+        Character player = new Character(name, "Human", "Fighter", 1, 8, 15,7,9,12,13,10); // Initial player stats
         player.printStats();
 
         // Add some starting items to the player's inventory
@@ -59,7 +60,7 @@ public class Game {
                     System.out.println("Invalid option. Please try again.");
             }
 
-            if (player.getHealth() <= 0) {
+            if (player.getHitPoints() <= 0) {
                 System.out.println("Game Over!");
                 break;
             }
