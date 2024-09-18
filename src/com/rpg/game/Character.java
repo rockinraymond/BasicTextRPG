@@ -39,7 +39,7 @@ public class Character extends Actor{
         this.attackBonus = 0;
         this.inventory = new Inventory(); // Initialize an empty inventory
 
-        int [] savingThrows = assignStartingSavingThrows(charClass,race);
+        int [] savingThrows = assignSavingThrows(charClass,race,level);
         this.deathRayPoisonSave = savingThrows[0];
         this.magicWandSave = savingThrows[1];
         this.paralysisSave = savingThrows[2];
@@ -132,41 +132,70 @@ public class Character extends Actor{
         }
     }
 
-    // Function to assign stating saving throws based on class and race.
-    public static int[] assignStartingSavingThrows(String chosenClass, String chosenRace) {
-        int[] savingThrows = new int[5]; // DeathRay, Wands, Paralysis, DragonBreath, Spells
+    // Function to assign saving throws based on class and race and level.
+    public static int[] assignSavingThrows(String chosenClass, String chosenRace, int level) {
+        // Death Ray, Wands, Paralysis, Dragon Breath, Spells
+        int[] savingThrows = new int[] {13, 14, 15, 16, 18}; // default saving throws for NM characters
 
         switch (chosenClass) {
             case "Fighter":
-                savingThrows[0] = 12;
-                savingThrows[1] = 13;
-                savingThrows[2] = 14;
-                savingThrows[3] = 15;
-                savingThrows[4] = 17;
+                if (level == 1) savingThrows = new int[]{12, 13, 14, 15, 17};
+                else if (level >= 2 && level <= 3) savingThrows = new int[]{11, 12, 14, 15, 16};
+                else if (level >= 4 && level <= 5) savingThrows = new int[]{11, 11, 13, 14, 15};
+                else if (level >= 6 && level <= 7) savingThrows = new int[]{10, 11, 12, 14, 15};
+                else if (level >= 8 && level <= 9) savingThrows = new int[]{9, 10, 12, 13, 14};
+                else if (level >= 10 && level <= 11) savingThrows = new int[]{9, 9, 11, 12, 13};
+                else if (level >= 12 && level <= 13) savingThrows = new int[]{8, 9, 10, 12, 13};
+                else if (level >= 14 && level <= 15) savingThrows = new int[]{7, 8, 10, 11, 12};
+                else if (level >= 16 && level <= 17) savingThrows = new int[]{7, 7, 9, 10, 11};
+                else if (level >= 18 && level <= 19) savingThrows = new int[]{6, 7, 8, 10, 11};
+                else if (level == 20) savingThrows = new int[]{5, 6, 8, 9, 10};
                 break;
+
             case "Magic User":
-                savingThrows[0] = 13;
-                savingThrows[1] = 14;
-                savingThrows[2] = 13;
-                savingThrows[3] = 16;
-                savingThrows[4] = 15;
+                if (level == 1) savingThrows = new int[]{13, 14, 13, 16, 15};
+                else if (level >= 2 && level <= 3) savingThrows = new int[]{13, 14, 13, 15, 14};
+                else if (level >= 4 && level <= 5) savingThrows = new int[]{12, 13, 12, 15, 13};
+                else if (level >= 6 && level <= 7) savingThrows = new int[]{12, 12, 11, 14, 13};
+                else if (level >= 8 && level <= 9) savingThrows = new int[]{11, 11, 10, 14, 12};
+                else if (level >= 10 && level <= 11) savingThrows = new int[]{11, 10, 9, 13, 11};
+                else if (level >= 12 && level <= 13) savingThrows = new int[]{10, 10, 9, 13, 11};
+                else if (level >= 14 && level <= 15) savingThrows = new int[]{10, 9, 8, 12, 10};
+                else if (level >= 16 && level <= 17) savingThrows = new int[]{9, 8, 7, 12, 9};
+                else if (level >= 18 && level <= 19) savingThrows = new int[]{9, 7, 6, 11, 9};
+                else if (level == 20) savingThrows = new int[]{8, 6, 5, 11, 8};
                 break;
-            case "Thief":
-                savingThrows[0] = 13;
-                savingThrows[1] = 14;
-                savingThrows[2] = 13;
-                savingThrows[3] = 16;
-                savingThrows[4] = 15;
-                break;
+
             case "Cleric":
-                savingThrows[0] = 11;
-                savingThrows[1] = 12;
-                savingThrows[2] = 14;
-                savingThrows[3] = 16;
-                savingThrows[4] = 15;
+                if (level == 1) savingThrows = new int[]{11, 12, 14, 16, 15};
+                else if (level >= 2 && level <= 3) savingThrows = new int[]{10, 11, 13, 15, 14};
+                else if (level >= 4 && level <= 5) savingThrows = new int[]{9, 10, 13, 15, 14};
+                else if (level >= 6 && level <= 7) savingThrows = new int[]{9, 10, 12, 14, 13};
+                else if (level >= 8 && level <= 9) savingThrows = new int[]{8, 9, 12, 14, 13};
+                else if (level >= 10 && level <= 11) savingThrows = new int[]{8, 9, 11, 13, 12};
+                else if (level >= 12 && level <= 13) savingThrows = new int[]{7, 8, 11, 13, 12};
+                else if (level >= 14 && level <= 15) savingThrows = new int[]{7, 8, 10, 12, 11};
+                else if (level >= 16 && level <= 17) savingThrows = new int[]{6, 7, 10, 12, 11};
+                else if (level >= 18 && level <= 19) savingThrows = new int[]{6, 7, 9, 11, 10};
+                else if (level == 20) savingThrows = new int[]{5, 6, 9, 11, 10};
                 break;
+
+            case "Thief":
+                if (level == 1) savingThrows = new int[]{13, 14, 13, 16, 15};
+                else if (level >= 2 && level <= 3) savingThrows = new int[]{12, 14, 12, 15, 14};
+                else if (level >= 4 && level <= 5) savingThrows = new int[]{11, 13, 12, 14, 13};
+                else if (level >= 6 && level <= 7) savingThrows = new int[]{11, 13, 11, 13, 13};
+                else if (level >= 8 && level <= 9) savingThrows = new int[]{10, 12, 11, 12, 12};
+                else if (level >= 10 && level <= 11) savingThrows = new int[]{9, 12, 10, 11, 11};
+                else if (level >= 12 && level <= 13) savingThrows = new int[]{9, 10, 10, 10, 11};
+                else if (level >= 14 && level <= 15) savingThrows = new int[]{8, 10, 9, 9, 10};
+                else if (level >= 16 && level <= 17) savingThrows = new int[]{7, 9, 9, 8, 9};
+                else if (level >= 18 && level <= 19) savingThrows = new int[]{7, 9, 8, 7, 9};
+                else if (level == 20) savingThrows = new int[]{6, 8, 8, 6, 8};
+                break;
+
             default:
-                System.out.println("Unknown class. No saving throws assigned.");
+                System.out.println("Unknown class. Default saving throws assigned.");
                 break;
         }
 

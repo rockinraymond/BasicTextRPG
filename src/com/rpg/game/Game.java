@@ -248,10 +248,9 @@ public class Game {
             hitPoints = 8;
             break;
         case "Cleric":
-        case "Thief":
             hitPoints = 6;
             break;
-        default: //Magic Users and others
+        default: //Magic Users, Thieves and others
             hitPoints = 4;
             break;
     }
