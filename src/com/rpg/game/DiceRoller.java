@@ -33,5 +33,8 @@ public class DiceRoller {
         return rollDie(20);  // Roll a twenty-sided die
     }
 
+    public int roll1d6() {
+        return rollDie(6);
+    }
     // Additional dice rolls can be added as needed (D8, D10, etc.)
 }

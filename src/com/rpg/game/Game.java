@@ -39,8 +39,8 @@ public class Game {
 
             switch (choice) {
                 case 1:
-                    //Monster monster = generateRandomEnemy();
-                   // Combat.fight(player, monster);
+                    Monster orc = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
+                    new Encounter(new Actor[] {player, orc}).startEncounter();
                     break;
                 case 2:
                     player.printStats();

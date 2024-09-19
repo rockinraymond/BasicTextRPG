@@ -15,6 +15,8 @@ public class Actor {
     int spellSave;
 
     int movement;
+    boolean surprised = false;
+    int initiative;
 
     public String getName() {
         return name;
@@ -38,6 +40,12 @@ public class Actor {
         if(this.hitPoints > this.maxHitPoints){
             this.hitPoints = this.maxHitPoints;
         }
+    }
+
+    public int attackRoll(int modifier){
+        int dieRoll = new DiceRoller().rollD20();
+        dieRoll += (this.attackBonus + modifier);
+        return dieRoll;
     }
 
     public int getArmorClass() {
@@ -70,5 +78,52 @@ public class Actor {
 
     public int getMovement(){
         return movement;
+    }
+
+    public int getDexterity() {
+        return 11;
+    }
+
+    public int getInitiative(){
+        return initiative;
+    }
+
+    public void setInitiative(int initiative){
+        this.initiative = initiative;
+    }
+
+    public boolean isSurprised(){
+        return surprised;
+    }
+
+    public void checkSurprise(){
+        int surpriseRoll = new DiceRoller().rollDie(6);
+        if (surpriseRoll < 3){
+            this.surprised = true;
+        }
+    }
+
+    public void setSurprised(boolean surprised){
+            this.surprised = surprised;
+    }
+
+    public static int calculateAbilityBonus(int abilityScore){
+        if (abilityScore == 3) {
+            return -3;
+        } else if (abilityScore >= 4 && abilityScore <= 5) {
+            return -2;
+        } else if (abilityScore >= 6 && abilityScore <= 8) {
+            return -1;
+        } else if (abilityScore >= 9 && abilityScore <= 12) {
+            return 0;
+        } else if (abilityScore >= 13 && abilityScore <= 15) {
+            return 1;
+        } else if (abilityScore >= 16 && abilityScore <= 17) {
+            return 2;
+        } else if (abilityScore == 18) {
+            return 3;
+        } else {
+            throw new IllegalArgumentException("Invalid ability score");
+        }
     }
 }

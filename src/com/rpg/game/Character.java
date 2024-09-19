@@ -53,6 +53,60 @@ public class Character extends Actor{
 
     // Getters and setters
 
+    // Getter and Setter for strength
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    // Getter and Setter for constitution
+    public int getConstitution() {
+        return constitution;
+    }
+
+    public void setConstitution(int constitution) {
+        this.constitution = constitution;
+    }
+
+    // Getter and Setter for wisdom
+    public int getWisdom() {
+        return wisdom;
+    }
+
+    public void setWisdom(int wisdom) {
+        this.wisdom = wisdom;
+    }
+
+    // Getter and Setter for charisma
+    public int getCharisma() {
+        return charisma;
+    }
+
+    public void setCharisma(int charisma) {
+        this.charisma = charisma;
+    }
+
+    // Getter and Setter for dexterity
+    public int getDexterity() {
+        return dexterity;
+    }
+
+    public void setDexterity(int dexterity) {
+        this.dexterity = dexterity;
+    }
+
+    // Getter and Setter for intelligence
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
     public int attack() {
         return (int) (Math.random() * strength); // Attack based on strength
     }
@@ -274,23 +328,5 @@ public class Character extends Actor{
         System.out.println("Rods/Staves/Spells: " + spellSave);
     }
 
-    public static int calculateAbilityBonus(int abilityScore){
-        if (abilityScore == 3) {
-            return -3;
-        } else if (abilityScore >= 4 && abilityScore <= 5) {
-            return -2;
-        } else if (abilityScore >= 6 && abilityScore <= 8) {
-            return -1;
-        } else if (abilityScore >= 9 && abilityScore <= 12) {
-            return 0;
-        } else if (abilityScore >= 13 && abilityScore <= 15) {
-            return 1;
-        } else if (abilityScore >= 16 && abilityScore <= 17) {
-            return 2;
-        } else if (abilityScore == 18) {
-            return 3;
-        } else {
-            throw new IllegalArgumentException("Invalid ability score");
-        }
-    }
+
 }
