@@ -11,7 +11,6 @@ public class Monster extends Actor{
     private char treasureType;
     private int XP;
 
-
     public Monster(String name, int armorClass, int hitDice, int damageDie, int numberDamDie, int movement, String saveClass, int saveLevel, int morale, char treasureType, int XP) {
         DiceRoller dieRoller = new DiceRoller();
         this.name = name;
@@ -21,6 +20,7 @@ public class Monster extends Actor{
         this.hitPoints = this.maxHitPoints;
         this.damageDie = damageDie;
         this.numberDamDie = numberDamDie;
+        this.attackBonus= calculateAttackBonus(this.hitDice);
 
         int [] savingThrows = assignSavingThrows(saveClass,saveLevel);
         this.deathRayPoisonSave = savingThrows[0];
@@ -35,8 +35,31 @@ public class Monster extends Actor{
         this.XP = XP;
     }
 
-    public int attack() {
-        return 1;
+    public int rollDamage(){
+        return new DiceRoller().rollMultipleDice(this.numberDamDie,damageDie) + attackBonus;
+    }
+
+    public static int calculateAttackBonus(int hitDice) {
+        int attackBonus = 0;
+
+        if (hitDice == 1) attackBonus = 1;
+        else if (hitDice == 2) attackBonus = 2;
+        else if (hitDice == 3) attackBonus = 3;
+        else if (hitDice == 4) attackBonus = 4;
+        else if (hitDice == 5) attackBonus = 5;
+        else if (hitDice == 6 || hitDice == 7) attackBonus = 6;
+        else if (hitDice == 8 || hitDice == 9) attackBonus = 7;
+        else if (hitDice == 10 || hitDice == 11) attackBonus = 8;
+        else if (hitDice == 12 || hitDice == 13) attackBonus = 9;
+        else if (hitDice == 14 || hitDice == 15) attackBonus = 10;
+        else if (hitDice == 16 || hitDice == 17) attackBonus = 11;
+        else if (hitDice == 18 || hitDice == 19) attackBonus = 12;
+        else if (hitDice >= 20 && hitDice <= 23) attackBonus = 13;
+        else if (hitDice >= 24 && hitDice <= 27) attackBonus = 14;
+        else if (hitDice >= 28 && hitDice <= 31) attackBonus = 15;
+        else if (hitDice >= 32) attackBonus = 16;
+
+        return attackBonus;
     }
 
     public static int[] assignSavingThrows(String chosenClass, int level) {

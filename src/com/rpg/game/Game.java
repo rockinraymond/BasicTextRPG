@@ -39,8 +39,16 @@ public class Game {
 
             switch (choice) {
                 case 1:
-                    Monster orc = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
-                    new Encounter(new Actor[] {player, orc}).startEncounter();
+                    Monster orc1 = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
+                    Monster orc2 = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
+                    Monster orc3 = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
+
+
+
+                    NPC elf = new NPC("Morningstar", "Elf", "Fighter", 1, 6,13,15,10,11,8,9);
+                    elf.equipWeapon(ItemRepository.getItem("Longsword"));
+                    elf.equipArmor(ItemRepository.getItem("Chain mail"));
+                    new Encounter(new Actor[] {player,elf, orc1, orc2, orc3}).startEncounter();
                     break;
                 case 2:
                     player.printStats();

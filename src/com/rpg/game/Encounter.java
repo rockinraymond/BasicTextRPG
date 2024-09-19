@@ -30,7 +30,10 @@ public class Encounter {
         System.out.println("\nChecking for surprise...");
         for (Actor actor : actors) {
             int surpriseRoll = diceRoller.roll1d6();
-            int surpriseThreshold = 2;  // Example: surprise on a roll of 1-2
+            int surpriseThreshold = 2;
+            if (actor.getRace().equals("Elf")){
+                surpriseThreshold = 1;
+            }
             if (surpriseRoll <= surpriseThreshold) {
                 actor.setSurprised(true);
                 System.out.println(actor.getName() + " is surprised and cannot act in the first round.");
@@ -42,7 +45,7 @@ public class Encounter {
     private void rollInitiative() {
         System.out.println("\nRolling initiative...");
         for (Actor actor : actors) {
-            int initiative = diceRoller.roll1d6() + actor.calculateAbilityBonus(actor.getDexterity());
+            int initiative = diceRoller.roll1d6() + Actor.calculateAbilityBonus(actor.getDexterity());
             actor.setInitiative(initiative);
             System.out.println(actor.getName() + " rolls initiative: " + initiative);
         }
@@ -81,11 +84,15 @@ public class Encounter {
     private void takeTurn(Actor actor) {
         if (actor.isSurprised()) {
             System.out.println(actor.getName() + " is surprised and cannot act this round.");
-            actor.setSurprised(false);
+            actor.setSurprised(false); //will not be surprised next round;
         } else if (actor instanceof Character) {
-            offerPlayerChoices((Character) actor);  // Offer choices to player characters
+            if (actor instanceof NPC){
+                performRandomAction(actor);
+            }else{
+                offerPlayerChoices((Character) actor);
+            };  // Offer choices to player characters
         } else if (actor instanceof Monster) {
-            performRandomAction((Monster) actor); // Perform random action for monsters
+            performRandomAction(actor); // Perform random action for monsters
         }
     }
 
@@ -103,8 +110,8 @@ public class Encounter {
             case 1:
                 Actor target = chooseTarget();
                 if (target != null) {
-                    System.out.println(character.getName() + " Attacks!");
-                   // character.attack(target);
+                    //System.out.println(character.getName() + " Attacks!");
+                    character.attack(target);
                 }
                 break;
             case 2:
@@ -146,25 +153,33 @@ public class Encounter {
         return null;
     }
 
-    // Perform random actions for monsters
+    // Perform random actions for monsters/NPCs
     private void performRandomAction(Actor monster) {
         int randomAction = diceRoller.roll1d6() % 4;
-        Actor target = chooseRandomTarget();
+        Actor target;
+        if (monster instanceof Monster){
+            target = chooseRandomTarget();
+        }else{
+            target = chooseRandomTargetMonster();
+        }
         switch (randomAction) {
             case 0:
-                System.out.println(monster.getName() + " Attacks!");
-                //monster.attack(target);
+                //System.out.println(monster.getName() + " Attacks!");
+                monster.attack(target);
                 break;
             case 1:
-                System.out.println(monster.getName() + " Defends!");
+                //System.out.println(monster.getName() + " Defends!");
+                monster.attack(target);
                 //monster.defend();
                 break;
             case 2:
-                System.out.println(monster.getName() + " casts a spell!");
+                //System.out.println(monster.getName() + " casts a spell!");
+                monster.attack(target);
                 //monster.castSpell();
                 break;
             case 3:
-                System.out.println(monster.getName() + " uses an item!");
+               // System.out.println(monster.getName() + " uses an item!");
+                monster.attack(target);
                 //monster.useItem();
                 break;
             default:
@@ -176,6 +191,13 @@ public class Encounter {
     private Actor chooseRandomTarget() {
         return Arrays.stream(actors)
                 .filter(a -> a instanceof Character && a.getHitPoints() > 0)
+                .findAny()
+                .orElse(null);
+    }
+
+    private Actor chooseRandomTargetMonster() {
+        return Arrays.stream(actors)
+                .filter(a -> a instanceof Monster && a.getHitPoints() > 0)
                 .findAny()
                 .orElse(null);
     }

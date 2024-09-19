@@ -36,7 +36,7 @@ public class Character extends Actor{
         this.maxHitPoints = maxHitPoints + calculateAbilityBonus(this.constitution);
         this.hitPoints = this.maxHitPoints;
         this.armorClass = 11;
-        this.attackBonus = 0;
+        this.attackBonus = calculateAttackBonus(this.charClass, this.level);
         this.inventory = new Inventory(); // Initialize an empty inventory
 
         int [] savingThrows = assignSavingThrows(charClass,race,level);
@@ -52,6 +52,10 @@ public class Character extends Actor{
     }
 
     // Getters and setters
+
+    public String getRace(){
+        return race;
+    }
 
     // Getter and Setter for strength
     public int getStrength() {
@@ -122,6 +126,16 @@ public class Character extends Actor{
 
     public void viewInventory() {
         inventory.viewInventory();
+    }
+
+    public int rollDamage(){
+        int damageDie = 4;
+        if (this.weaponHeld != null){
+            damageDie = this.weaponHeld.getDamage();
+        }
+        int damage =  new DiceRoller().rollDie(damageDie);
+        damage += attackBonus;
+        return damage;
     }
 
     public void equipWeapon(Item item) {
@@ -269,6 +283,53 @@ public class Character extends Actor{
                 break;
         }
         return savingThrows;
+    }
+
+    // Function to calculate attack bonus for characters
+    public static int calculateAttackBonus(String characterClass, int level) {
+        int attackBonus = 0;
+
+        switch (characterClass.toLowerCase()) {
+            case "fighter":
+                if (level == 1) attackBonus = 1;
+                else if (level >= 2 && level <= 3) attackBonus = 2;
+                else if (level == 4) attackBonus = 3;
+                else if (level >= 5 && level <= 6) attackBonus = 4;
+                else if (level == 7) attackBonus = 5;
+                else if (level >= 8 && level <= 10) attackBonus = 6;
+                else if (level >= 11 && level <= 12) attackBonus = 7;
+                else if (level >= 13 && level <= 15) attackBonus = 8;
+                else if (level >= 16 && level <= 17) attackBonus = 9;
+                else if (level >= 18 && level <= 20) attackBonus = 10;
+                break;
+
+            case "cleric":
+            case "thief":
+                if (level >= 1 && level <= 2) attackBonus = 1;
+                else if (level >= 3 && level <= 4) attackBonus = 2;
+                else if (level >= 5 && level <= 6) attackBonus = 3;
+                else if (level >= 7 && level <= 8) attackBonus = 4;
+                else if (level >= 9 && level <= 11) attackBonus = 5;
+                else if (level >= 12 && level <= 14) attackBonus = 6;
+                else if (level >= 15 && level <= 17) attackBonus = 7;
+                else if (level >= 18 && level <= 20) attackBonus = 8;
+                break;
+
+            case "magic user":
+                if (level >= 1 && level <= 3) attackBonus = 1;
+                else if (level >= 4 && level <= 5) attackBonus = 2;
+                else if (level >= 6 && level <= 8) attackBonus = 3;
+                else if (level >= 9 && level <= 12) attackBonus = 4;
+                else if (level >= 13 && level <= 15) attackBonus = 5;
+                else if (level >= 16 && level <= 18) attackBonus = 6;
+                else if (level >= 19 && level <= 20) attackBonus = 7;
+                break;
+
+            default:
+                System.out.println("Invalid character class.");
+        }
+
+        return attackBonus;
     }
 
     public void printEquipment(){

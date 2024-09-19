@@ -22,6 +22,10 @@ public class Actor {
         return name;
     }
 
+    public String getRace(){
+        return "Unknown";
+    }
+
     public int getHitPoints() {
         return hitPoints;
     }
@@ -42,10 +46,19 @@ public class Actor {
         }
     }
 
-    public int attackRoll(int modifier){
-        int dieRoll = new DiceRoller().rollD20();
-        dieRoll += (this.attackBonus + modifier);
-        return dieRoll;
+    public void attack(Actor target){
+        int targetAC = target.getArmorClass();
+        int attackRoll = new DiceRoller().rollD20();
+        attackRoll += (this.attackBonus);
+        System.out.println(this.getName() + " attacks " + target.getName() + " and rolled a " + attackRoll + "!");
+        if (attackRoll > targetAC){
+            int damageRoll = this.rollDamage();
+            System.out.println(this.getName() + " hits " + target.getName() + " dealing " + damageRoll + " damage!");
+            target.takeDamage(damageRoll);
+        }else{
+            System.out.println(this.getName() + " missed!");
+        }
+
     }
 
     public int getArmorClass() {
@@ -105,6 +118,10 @@ public class Actor {
 
     public void setSurprised(boolean surprised){
             this.surprised = surprised;
+    }
+
+    public int rollDamage(){
+        return new DiceRoller().rollDie(4);
     }
 
     public static int calculateAbilityBonus(int abilityScore){
