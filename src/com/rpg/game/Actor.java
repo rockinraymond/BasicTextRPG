@@ -50,13 +50,16 @@ public class Actor {
         int targetAC = target.getArmorClass();
         int attackRoll = new DiceRoller().rollD20();
         attackRoll += (this.attackBonus);
-        System.out.println(this.getName() + " attacks " + target.getName() + " and rolled a " + attackRoll + "!");
+        System.out.print(this.getName() + " attacks " + target.getName() + " and rolled a " + attackRoll + "! ");
         if (attackRoll > targetAC){
             int damageRoll = this.rollDamage();
             System.out.println(this.getName() + " hits " + target.getName() + " dealing " + damageRoll + " damage!");
             target.takeDamage(damageRoll);
         }else{
             System.out.println(this.getName() + " missed!");
+        }
+        if (target.hitPoints == 0){
+            System.out.println(target.getName() + " has been slain!");
         }
 
     }

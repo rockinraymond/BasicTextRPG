@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Game {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         DiceRoller diceRoller = new DiceRoller();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Basic Fantasy RPG!");

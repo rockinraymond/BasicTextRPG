@@ -3,6 +3,7 @@ package com.rpg.game;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Encounter {
     private Actor[] actors;  // Array of actors (both player characters and monsters)
@@ -18,7 +19,7 @@ public class Encounter {
     }
 
     // Start the encounter: Initiates the encounter, rolls for surprise, and checks initiative order.
-    public void startEncounter() {
+    public void startEncounter() throws InterruptedException {
         System.out.println("An encounter begins!");
         checkSurprise();       // Step 1: Determine if any actors are surprised
         rollInitiative();      // Step 2: Roll initiative for all actors
@@ -26,8 +27,9 @@ public class Encounter {
     }
 
     // Check Surprise: Rolls to see if any actors are surprised and cannot act in the first round.
-    private void checkSurprise() {
+    private void checkSurprise() throws InterruptedException {
         System.out.println("\nChecking for surprise...");
+        TimeUnit.SECONDS.sleep(1);
         for (Actor actor : actors) {
             int surpriseRoll = diceRoller.roll1d6();
             int surpriseThreshold = 2;
@@ -42,8 +44,9 @@ public class Encounter {
     }
 
     // Roll Initiative: Rolls for initiative for all actors and determines action order based on Dexterity.
-    private void rollInitiative() {
+    private void rollInitiative() throws InterruptedException {
         System.out.println("\nRolling initiative...");
+        TimeUnit.SECONDS.sleep(1);
         for (Actor actor : actors) {
             int initiative = diceRoller.roll1d6() + Actor.calculateAbilityBonus(actor.getDexterity());
             actor.setInitiative(initiative);
@@ -58,10 +61,11 @@ public class Encounter {
     }
 
     // Execute Rounds: Handles the rounds of combat, calling each actor’s turn based on initiative.
-    private void executeRounds() {
+    private void executeRounds() throws InterruptedException {
         while (combatOngoing()) { // Combat continues until one side is defeated or disengages
             roundNumber++;
             System.out.println("\n--- Round " + roundNumber + " ---");
+            TimeUnit.SECONDS.sleep(1);
             for (Actor actor : actors) {
                 if (actor.getHitPoints() > 0) {
                     takeTurn(actor);  // Each actor takes their turn in order of initiative
@@ -81,7 +85,8 @@ public class Encounter {
     }
 
     // Execute a single actor's turn based on whether they are a player character or a monster.
-    private void takeTurn(Actor actor) {
+    private void takeTurn(Actor actor) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(1);
         if (actor.isSurprised()) {
             System.out.println(actor.getName() + " is surprised and cannot act this round.");
             actor.setSurprised(false); //will not be surprised next round;
@@ -155,36 +160,36 @@ public class Encounter {
 
     // Perform random actions for monsters/NPCs
     private void performRandomAction(Actor monster) {
-        int randomAction = diceRoller.roll1d6() % 4;
+        //int randomAction = diceRoller.roll1d6() % 4;
         Actor target;
         if (monster instanceof Monster){
             target = chooseRandomTarget();
         }else{
             target = chooseRandomTargetMonster();
         }
-        switch (randomAction) {
-            case 0:
-                //System.out.println(monster.getName() + " Attacks!");
+//        switch (randomAction) {
+//            case 0:
+//                //System.out.println(monster.getName() + " Attacks!");
+//                monster.attack(target);
+//                break;
+//            case 1:
+//                //System.out.println(monster.getName() + " Defends!");
+//                monster.attack(target);
+//                //monster.defend();
+//                break;
+//            case 2:
+//                //System.out.println(monster.getName() + " casts a spell!");
+//                monster.attack(target);
+//                //monster.castSpell();
+//                break;
+//            case 3:
+//               // System.out.println(monster.getName() + " uses an item!");
+//                monster.attack(target);
+//                //monster.useItem();
+//                break;
+//            default:
                 monster.attack(target);
-                break;
-            case 1:
-                //System.out.println(monster.getName() + " Defends!");
-                monster.attack(target);
-                //monster.defend();
-                break;
-            case 2:
-                //System.out.println(monster.getName() + " casts a spell!");
-                monster.attack(target);
-                //monster.castSpell();
-                break;
-            case 3:
-               // System.out.println(monster.getName() + " uses an item!");
-                monster.attack(target);
-                //monster.useItem();
-                break;
-            default:
-                //monster.attack(target);
-        }
+        //}
     }
 
     // Choose a random target for the monster to attack
