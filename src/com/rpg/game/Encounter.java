@@ -86,7 +86,6 @@ public class Encounter {
 
     // Execute a single actor's turn based on whether they are a player character or a monster.
     private void takeTurn(Actor actor) throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
         if (actor.isSurprised()) {
             System.out.println(actor.getName() + " is surprised and cannot act this round.");
             actor.setSurprised(false); //will not be surprised next round;
@@ -95,14 +94,15 @@ public class Encounter {
                 performRandomAction(actor);
             }else{
                 offerPlayerChoices((Character) actor);
-            };  // Offer choices to player characters
+            }  // Offer choices to player characters
         } else if (actor instanceof Monster) {
             performRandomAction(actor); // Perform random action for monsters
         }
+        TimeUnit.SECONDS.sleep(1);
     }
 
     // Offer Player Choices: Displays choices for player characters and lets them choose their action.
-    private void offerPlayerChoices(Character character) {
+    private void offerPlayerChoices(Character character) throws InterruptedException {
         System.out.println(character.getName() + ", it's your turn. What would you like to do?");
         System.out.println("1. Attack");
         System.out.println("2. Defend");
@@ -140,6 +140,7 @@ public class Encounter {
                 offerPlayerChoices(character);
                 break;
         }
+        TimeUnit.SECONDS.sleep(1);
     }
 
     // Choose a target for attacking
@@ -159,7 +160,7 @@ public class Encounter {
     }
 
     // Perform random actions for monsters/NPCs
-    private void performRandomAction(Actor monster) {
+    private void performRandomAction(Actor monster) throws InterruptedException {
         //int randomAction = diceRoller.roll1d6() % 4;
         Actor target;
         if (monster instanceof Monster){
@@ -190,6 +191,7 @@ public class Encounter {
 //            default:
                 monster.attack(target);
         //}
+        TimeUnit.SECONDS.sleep(1);
     }
 
     // Choose a random target for the monster to attack
@@ -208,8 +210,9 @@ public class Encounter {
     }
 
     // End the encounter
-    private void endEncounter() {
+    private void endEncounter() throws InterruptedException {
         System.out.println("\nThe encounter has ended.");
+        TimeUnit.SECONDS.sleep(1);
         if (Arrays.stream(actors).noneMatch(a -> a instanceof Monster && a.getHitPoints() > 0)) {
             System.out.println("Players have defeated the monsters!");
         } else {

@@ -22,10 +22,10 @@ public class Game {
         while (true) {
             System.out.println("\nWhat would you like to do?");
             System.out.println("1. Explore");
-            System.out.println("2. View Stats");
+            System.out.println("2. View Character Sheet");
             System.out.println("3. View Inventory");
-            System.out.println("4. View Equipped Items");
-            System.out.println("5. Use Item");
+            System.out.println("4. View Party");
+            System.out.println("5. View Quest Log");
             System.out.println("6. Exit Game");
 
             System.out.print("Enter choice: ");
@@ -54,15 +54,13 @@ public class Game {
                     player.printStats();
                     break;
                 case 3:
-                    player.viewInventory();
+                    player.viewInventory(scanner);
                     break;
                 case 4:
-                    player.printEquipment();
+                    //view party
                     break;
                 case 5:
-                    System.out.print("Enter the name of the item you want to use: ");
-                    String itemName = scanner.nextLine();
-                    player.useItem(itemName);
+                    //view quest log
                     break;
                 case 6:
                     System.out.println("Goodbye!");

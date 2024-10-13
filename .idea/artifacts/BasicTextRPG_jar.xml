@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BasicTextRPG:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BasicTextRPG_jar</output-path>
+    <root id="archive" name="BasicTextRPG.jar">
+      <element id="module-output" name="BasicTextRPG" />
+    </root>
+  </artifact>
+</component>

@@ -1,5 +1,7 @@
 package com.rpg.game;
 
+import java.util.Scanner;
+
 public class Character extends Actor{
     private String race;
     private String charClass;
@@ -124,8 +126,44 @@ public class Character extends Actor{
         inventory.removeItem(itemName);
     }
 
-    public void viewInventory() {
-        inventory.viewInventory();
+    public void viewInventory(Scanner scanner) {
+        //inventory.viewInventory();
+        boolean inventoryOpen = true;
+        while (inventoryOpen) {
+            System.out.println("\nINVENTORY:");
+            System.out.println("1. View Items");
+            System.out.println("2. View Equipment");
+            System.out.println("3. Use an Item");
+            System.out.println("4. Exit Inventory");
+
+            System.out.print("Enter choice: ");
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+
+            switch (choice) {
+                case 1:
+                    inventory.viewInventory();
+                    break;
+                case 2:
+                   this.printEquipment();
+                    break;
+                case 3:
+                    System.out.print("Enter the name of the item you want to use: ");
+                    String itemName = scanner.nextLine();
+                    this.useItem(itemName);
+                    break;
+                case 4:
+                    inventoryOpen = false;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
     }
 
     public int rollDamage(){
