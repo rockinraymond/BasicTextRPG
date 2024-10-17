@@ -1,5 +1,7 @@
 package com.rpg.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Character extends Actor{
@@ -20,6 +22,8 @@ public class Character extends Actor{
     private Item weaponHeld;
     private Item shieldWorn;
     private Item armorWorn;
+
+    private List<Quest> quests;
 
     // Constructor
     public Character(String name, String race, String charClass, int level,  int maxHitPoints, int strength,int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
@@ -51,12 +55,18 @@ public class Character extends Actor{
         this.weaponHeld = null;
         this.shieldWorn = null;
         this.armorWorn = null;
+
+        this.quests = new ArrayList<>();
     }
 
     // Getters and setters
 
     public String getRace(){
         return race;
+    }
+
+    public String getCharClass(){
+        return charClass;
     }
 
     // Getter and Setter for strength
@@ -425,6 +435,23 @@ public class Character extends Actor{
         System.out.println("Paralysis: " + paralysisSave);
         System.out.println("Dragon Breath: " + dragonBreathSave);
         System.out.println("Rods/Staves/Spells: " + spellSave);
+    }
+
+    public void addQuest(Quest quest) {
+        quests.add(quest);
+        System.out.println(quest.getName() + " has been added to your quest log.");
+    }
+
+    public void viewQuestLog() {
+        if (quests.isEmpty()) {
+            System.out.println("Your Quest Log is empty.");
+        } else {
+            System.out.println("Your Quest Log:");
+            for (Quest quest : quests) {
+                quest.displayQuest();
+                System.out.println(); // Blank line for readability
+            }
+        }
     }
 
 

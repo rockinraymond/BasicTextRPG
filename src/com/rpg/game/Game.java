@@ -14,9 +14,31 @@ public class Game {
         player.printStats();
 
         // Add some starting items to the player's inventory based on class
-        player.addItemToInventory(ItemRepository.getItem("Longsword"));
-        player.addItemToInventory(ItemRepository.getItem("Chain mail"));
-        player.addItemToInventory(ItemRepository.getItem("shield"));
+        if (player.getCharClass().equals("Fighter")) {
+            player.addItemToInventory(ItemRepository.getItem("Longsword"));
+            player.addItemToInventory(ItemRepository.getItem("Chain mail"));
+            player.addItemToInventory(ItemRepository.getItem("shield"));
+        }
+
+        if (player.getCharClass().equals("Thief")) {
+            player.addItemToInventory(ItemRepository.getItem("Shortsword"));
+            player.addItemToInventory(ItemRepository.getItem("Dagger"));
+            player.addItemToInventory(ItemRepository.getItem("Leather Armor"));
+        }
+
+        if (player.getCharClass().equals("Cleric")) {
+            player.addItemToInventory(ItemRepository.getItem("Mace"));
+            player.addItemToInventory(ItemRepository.getItem("Leather Armor"));
+            player.addItemToInventory(ItemRepository.getItem("shield"));
+        }
+
+        if (player.getCharClass().equals("Magic User")) {
+            player.addItemToInventory(ItemRepository.getItem("walking staff"));
+        }
+
+
+        //add a Quest
+        player.addQuest(new Quest("Welcome to the Game", "hello and welcome to this role playing game, this is your first Quest!"));
 
 
         while (true) {
@@ -61,6 +83,7 @@ public class Game {
                     break;
                 case 5:
                     //view quest log
+                    player.viewQuestLog();
                     break;
                 case 6:
                     System.out.println("Goodbye!");
