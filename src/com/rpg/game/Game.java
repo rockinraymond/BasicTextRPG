@@ -3,6 +3,7 @@ package com.rpg.game;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Game {
     public static void main(String[] args) throws InterruptedException {
@@ -10,8 +11,16 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Basic Fantasy RPG!");
 
+        Party playerParty = new Party();
         Character player = createNewCharacter(scanner, diceRoller);
+        playerParty.addCharacter(player);
         player.printStats();
+
+        //test party member
+        NPC elf = new NPC("Morningstar", "Elf", "Fighter", 1, 6,13,15,10,11,8,9);
+        elf.equipWeapon(ItemRepository.getItem("Longsword"));
+        elf.equipArmor(ItemRepository.getItem("Chain mail"));
+        playerParty.addCharacter(elf);
 
         // Add some starting items to the player's inventory based on class
         if (player.getCharClass().equals("Fighter")) {
@@ -61,16 +70,18 @@ public class Game {
 
             switch (choice) {
                 case 1:
-                    Monster orc1 = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
-                    Monster orc2 = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
-                    Monster orc3 = new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25);
+                    Actor[] monsterArray = {
+                            new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25),
+                            new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25),
+                            new Monster("Orc",14,1,1,1,30,"Fighter",1,8,'Q',25),
+                    };
+                    // Concatenate the arrays
+                    Actor[] encounterGroup = Stream.concat(
+                            Arrays.stream(playerParty.getPartyMembersArray()),
+                            Arrays.stream(monsterArray)
+                    ).toArray(Actor[]::new);
 
-
-
-                    NPC elf = new NPC("Morningstar", "Elf", "Fighter", 1, 6,13,15,10,11,8,9);
-                    elf.equipWeapon(ItemRepository.getItem("Longsword"));
-                    elf.equipArmor(ItemRepository.getItem("Chain mail"));
-                    new Encounter(new Actor[] {player,elf, orc1, orc2, orc3}).startEncounter();
+                    new Encounter(encounterGroup).startEncounter();
                     break;
                 case 2:
                     player.printStats();
@@ -79,7 +90,7 @@ public class Game {
                     player.viewInventory(scanner);
                     break;
                 case 4:
-                    //view party
+                    playerParty.listMembers();
                     break;
                 case 5:
                     //view quest log

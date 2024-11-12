@@ -437,6 +437,13 @@ public class Character extends Actor{
         System.out.println("Rods/Staves/Spells: " + spellSave);
     }
 
+    public void printStatsInParty() {
+        System.out.println("Name: " + name);
+        System.out.println("Level " + level + " " + race + " " + charClass);
+        System.out.println("HP: " + hitPoints + "/" + maxHitPoints);
+
+    }
+
     public void addQuest(Quest quest) {
         quests.add(quest);
         System.out.println(quest.getName() + " has been added to your quest log.");
