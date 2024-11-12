@@ -189,7 +189,9 @@ public class Encounter {
 //                //monster.useItem();
 //                break;
 //            default:
-                monster.attack(target);
+                if (target != null) {
+                    monster.attack(target);
+                }
         //}
         TimeUnit.SECONDS.sleep(1);
     }

@@ -58,4 +58,13 @@ public class Party {
     public Actor[] getPartyMembersArray() {
         return members.toArray(new Actor[0]);
     }
+
+    public boolean hasAliveMember() {
+        for (Character character : members) {
+            if (character.getHitPoints() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

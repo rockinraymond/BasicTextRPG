@@ -105,7 +105,7 @@ public class Game {
                     System.out.println("Invalid option. Please try again.");
             }
 
-            if (player.getHitPoints() <= 0) {
+            if (!playerParty.hasAliveMember()) {
                 System.out.println("Game Over!");
                 break;
             }
